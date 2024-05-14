@@ -22,3 +22,19 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
+      - name: 在服务器启动
+        uses: appleboy/ssh-action@master
+        env:
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          BLOG_STATIC_FILES: ${{ secrets.BLOG_STATIC_FILES }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          command_timeout: 20s
+          envs: SERVER_PORT, BLOG_STATIC_FILES
+          script: |
+            cd MyBlogServe/jar/
+            ps -ef | grep MyBlogServe-1.0-SNAPSHOT.jar | grep -v grep | awk '{print $2}' | xargs kill -9 
+            nohup java -jar MyBlogServe-1.0-SNAPSHOT.jar --server.port="$SERVER_PORT" --spring.web.resources.static-locations="file:$BLOG_STATIC_FILES" > nohup.out &
+            exit
