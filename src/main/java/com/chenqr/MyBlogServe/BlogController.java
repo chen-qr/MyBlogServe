@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BlogController {
 
-    @GetMapping("/")
-    public String hello() {
-        return "Hello, Blog!";
-    }
+    // @GetMapping("/")
+    // public String hello() {
+    //     return "Hello, Blog!";
+    // }
 }
